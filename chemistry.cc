@@ -236,8 +236,10 @@ int main(int argc, char *argv[])
                                               "sickness",
                                               "ticklish"};
 
-  // Test
-  //std::cout << GetAtomSentence(elements_to_test.at(1), elements) << '\n';
+  // Parse all the words
+  for(std::string word : elements_to_test) {
+    std::cout << GetAtomSentence(word, elements) << '\n';
+  }
 
   return 0;
 }
