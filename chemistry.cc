@@ -119,6 +119,95 @@ std::unordered_map<std::string, AtomicElement> ExtractAtomElements(
 }
 
 
+std::string GetAtomSentence(
+    const std::string &word_to_parse,
+    const std::unordered_map<std::string, AtomicElement> &atom_elements) {
+
+  std::string final_sentence;
+  std::vector<std::string> short_names;
+  std::vector<std::string> full_names;
+
+  double weight_one = 0.0;
+  double weight_two = 0.0;
+
+  // Check the weight of elements
+  for(size_t i = 0; i < word_to_parse.length(); ++i) {
+
+    // Get atomic element with one letter
+    if(atom_elements.count(word_to_parse.substr(i, 1))) {
+
+      AtomicElement temp_atom = atom_elements.at(word_to_parse.substr(i, 1));
+
+      weight_one = temp_atom.weight;
+    } else {
+      weight_one = 0.0;
+    }
+
+    // Get atomic element with two letter
+    if(i + 1 < word_to_parse.length()) {
+
+      if(atom_elements.count(word_to_parse.substr(i, 2))) {
+
+        AtomicElement temp_atom = atom_elements.at(word_to_parse.substr(i, 2));
+
+        weight_two = temp_atom.weight;
+      } else {
+        weight_two = 0.0;
+      }
+
+    } else {
+
+      // In this case, the word is undefinable
+      if(weight_one == 0.0)
+        return word_to_parse + " is undefinable";
+
+      weight_two = 0.0;
+    }
+
+
+    // Check who is the heavier
+    if(weight_one == 0.0 && weight_two == 0.0) {
+
+      return word_to_parse + " is undefinable";
+
+    } else if(weight_one >= weight_two) {
+
+      AtomicElement temp_atom = atom_elements.at(word_to_parse.substr(i, 1));
+
+      short_names.push_back(temp_atom.short_name);
+      full_names.push_back(temp_atom.full_name);
+
+    } else {
+
+      AtomicElement temp_atom = atom_elements.at(word_to_parse.substr(i, 2));
+
+      short_names.push_back(temp_atom.short_name);
+      full_names.push_back(temp_atom.full_name);
+
+      // Increment to next iteration
+      ++i;
+    }
+  }
+
+  // Create the final sentence
+  for(size_t i = 0; i < short_names.size(); i++) {
+    final_sentence += short_names.at(i);
+  }
+
+  final_sentence += " (";
+
+  for(size_t i = 0; i < full_names.size(); i++) {
+    final_sentence += full_names.at(i);
+
+    if(i + 1 < full_names.size()) {
+      final_sentence += ", ";
+    }
+  }
+
+  final_sentence += ")";
+  return final_sentence;
+}
+
 
 
 int main(int argc, char *argv[])
@@ -140,6 +229,15 @@ int main(int argc, char *argv[])
   }
 
 
+  // List of elements to test for the challenge
+  const std::vector<std::string> elements_to_test = {"functions",
+                                              "bacon",
+                                              "poison",
+                                              "sickness",
+                                              "ticklish"};
+
+  // Test
+  //std::cout << GetAtomSentence(elements_to_test.at(1), elements) << '\n';
 
   return 0;
 }
