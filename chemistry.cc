@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <fstream>
+#include <vector>
 
 
 // Container for elements
@@ -42,7 +43,7 @@ struct AtomicElement {
 
 // Function who extract atomic elements from the CSV File
 std::unordered_map<std::string, AtomicElement> ExtractAtomElements(
-    std::string path_to_file) {
+    const std::string &path_to_file) {
 
   // Init an empty map
   std::unordered_map<std::string, AtomicElement> atom_elements;
@@ -137,6 +138,8 @@ int main(int argc, char *argv[])
 
     return 0;
   }
+
+
 
   return 0;
 }
