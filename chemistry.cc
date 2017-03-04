@@ -22,10 +22,26 @@
 
 
 #include <iostream>
+#include <string>
+#include <unordered_map>
+#include <fstream>
+
+
+// Container for elements
+struct AtomicElement {
+
+  AtomicElement(std::string short_name, std::string full_name, double weight)
+    : short_name(short_name), full_name(full_name), weight(weight) {}
+
+  std::string short_name;
+  std::string full_name;
+  double weight;
+};
 
 
 int main(int argc, char *argv[])
 {
+
 
   return 0;
 }
